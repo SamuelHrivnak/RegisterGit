@@ -1,2 +1,2 @@
 # register
-Register akademia
+Skúšame niečo
