@@ -1,5 +1,11 @@
 package register;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +19,7 @@ public class ArrayRegister implements Register {
 	/** register.Person array. */
 	// private Person[] persons;
 	List<Person> persons = new ArrayList<>();
+	private final static String file = "out.bin";
 
 	/** Number of persons in this register. */
 	// private int count;
@@ -71,6 +78,7 @@ public class ArrayRegister implements Register {
 			throw new RuntimeException("Person with the same phone number already exists!");
 		else {
 			persons.add(person);
+			saveData();
 			Collections.sort(persons);
 		}
 	}
@@ -118,6 +126,7 @@ public class ArrayRegister implements Register {
 			// Do something
 			if (s.equals(person)) {
 				iterator.remove();
+				saveData();
 			}
 		}
 	}
@@ -152,5 +161,30 @@ public class ArrayRegister implements Register {
 			}
 		}		
 		return returnArray;	
+	}
+
+	@Override
+	public void loadData() {
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+			persons = (List<Person>) ois.readObject();
+				
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+
+	@Override
+	public void saveData() {
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {			
+				oos.writeObject(persons);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

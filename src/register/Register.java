@@ -15,6 +15,10 @@ public interface Register {
 	 * @return the maximum number of persons in this register.
 	 */
 	int getSize();
+	
+	void loadData();
+	
+	void saveData();
 
 	/**
 	 * Returns the person at the specified position in this register.
