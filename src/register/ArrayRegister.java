@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * register.Person register.
@@ -90,6 +91,9 @@ public class ArrayRegister implements Register {
 	 */
 	@Override
 	public Person findPersonByName(String name) {
+		//return persons.stream().filter(p -> p.getName().equals(name)).findAny().orElse(null);
+		
+		
 		for (int index = 0; index < persons.size(); index++) {
 			if (persons.get(index).getName().equals(name)) {
 				return persons.get(index);
