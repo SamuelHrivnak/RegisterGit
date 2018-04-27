@@ -3,6 +3,7 @@ package register;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 /**
  * User interface of the application.
@@ -84,10 +85,11 @@ public class ConsoleUI {
 		return Option.values()[selection - 1];
 	}
 
-	private void printRegister() {
-		for (int index = 0; index < register.getCount(); index++) {
-			System.out.println(index + 1 + ". " + register.getPerson(index).toString());
+	public void printRegister() {
+		for (int i = 1; i <= register.getSize(); i++) {
+			System.out.println("[ "+register.getPersonByRow(i).toString()+ " ]");
 		}
+		
 	}
 
 	private void addToRegister() {
@@ -96,7 +98,12 @@ public class ConsoleUI {
 		System.out.println("Enter Phone Number: ");
 		String phoneNumber = readLine();
 
-		register.addPerson(new Person(name, phoneNumber));
+		try {
+			register.addPerson(new Person(name, phoneNumber));
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	private void updateRegister() {
@@ -129,7 +136,7 @@ public class ConsoleUI {
 			System.out.print("Name: ");
 			String name = readLine();	
 			if (register.findPersonByName(name) !=null) {
-				System.out.println("Persons telephone number with this name is: " + register.findPersonByName(name).getPhoneNumber());
+				System.out.println("Persons telephone number with this name is: " + register.findPersonByName(name).getName());
 			}else {
 				System.out.println("Person with that name is not in our database");
 			}
@@ -150,8 +157,7 @@ public class ConsoleUI {
 	private void removeFromRegister() {
 		System.out.println("Enter index: ");
 		int index = Integer.parseInt(readLine());
-		Person person = register.getPerson(index - 1);
-		register.removePerson(person);
+		register.removePerson(index);
 	}
 
 }

@@ -41,10 +41,6 @@ public class ArrayRegister implements Register {
 	 * 
 	 * @see register.Register#getCount()
 	 */
-	@Override
-	public int getCount() {
-		return persons.size();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -123,12 +119,13 @@ public class ArrayRegister implements Register {
 	 * @see register.Register#removePerson(register.Person)
 	 */
 	@Override
-	public void removePerson(Person person) {
+	public void removePerson(int index) {
+		//TODO
 		Iterator<Person> iterator = persons.iterator();
 		while (iterator.hasNext()) {
 			Person s = iterator.next(); // must be called before you can call i.remove()
 			// Do something
-			if (s.equals(person)) {
+			if (s.equals(index)) {
 				iterator.remove();
 				saveData();
 			}
@@ -151,11 +148,11 @@ public class ArrayRegister implements Register {
 		return -1;
 	}
 	public void deleteAllBy(char firstLetter) {
-		for (Person person : persons) {
-			if (person.getName().charAt(0) == firstLetter) {
-				removePerson(person);
-			}
-		}
+//		for (Person person : persons) {
+//			if (person.getName().charAt(0) == firstLetter) {
+//				removePerson(person);
+//			}
+//		}
 	}
 	public List<Person> findAllPersonByNameContains(String nameContains){
 		List<Person> returnArray = new ArrayList<>();
@@ -190,5 +187,11 @@ public class ArrayRegister implements Register {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public Person getPersonByRow(int row) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

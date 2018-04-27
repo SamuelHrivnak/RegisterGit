@@ -1,5 +1,7 @@
 package register;
 
+import java.sql.SQLException;
+
 public interface Register {
 
 	/**
@@ -7,7 +9,6 @@ public interface Register {
 	 * 
 	 * @return the number of persons in this register
 	 */
-	int getCount();
 
 	/**
 	 * Returns the maximum number of persons in this register.
@@ -34,9 +35,11 @@ public interface Register {
 	 * 
 	 * @param person
 	 *            person to append to this register
+	 * @throws SQLException 
 	 */
-	void addPerson(Person person);
+	void addPerson(Person person) throws SQLException;
 
+	public Person getPersonByRow(int row);
 	/**
 	 * Returns the person with specified name in this register or <code>null</code>,
 	 * if match can not be found.
@@ -63,6 +66,6 @@ public interface Register {
 	 * @param person
 	 *            person to remove
 	 */
-	void removePerson(Person person);
+	void removePerson(int index);
 
 }
