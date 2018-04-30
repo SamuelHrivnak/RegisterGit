@@ -1,4 +1,4 @@
-package register;
+package database;
 
 public class Tester {
 

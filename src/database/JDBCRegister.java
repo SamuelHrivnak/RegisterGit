@@ -1,4 +1,4 @@
-package register;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,33 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import register.Person;
+import register.Register;
+
 public class JDBCRegister implements Register {
 	private static final String URL = "jdbc:postgresql://localhost/register_database";
 	private static final String USER = "postgres";
 	private static final String PASSWORD = "mastic1994";
 
-	/** register.Person array. */
-	List<Person> persons = new ArrayList<>();
-	// private final static String file = "out.bin";
-
-	/** Number of persons in this register. */
-	// private int count;
-
-	/**
-	 * Constructor creates an empty register with maximum size specified.
-	 * 
-	 * @param size
-	 *            maximum size of the register
-	 */
-	// public ArrayRegister() {
-	// // persons = new Person[size];
-	// // count = 0;
-	// }
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#getSize()
-	 */
 	@Override
 	public int getSize() {
 		final String INSERT = "SELECT count(id) FROM register.persons";
@@ -51,13 +32,27 @@ public class JDBCRegister implements Register {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#getPerson(int)
-	 */
+	
 	@Override
 	public Person getPerson(int index) {
+		final String INSERT = "SELECT name, number FROM register.persons WHERE index =?";
+		Person person = null;
+		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement statement = connection.prepareStatement(INSERT)) {
+			statement.setInt(1, index);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				person = new Person(rs.getString(1), rs.getString(2));
+				return person;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("osoba sa nenašla");
+		return person;
+	}
+	
+	public Person getPersonId(int index) {
 		final String INSERT = "SELECT name, number FROM register.persons WHERE index =?";
 		Person person = null;
 		try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -99,11 +94,7 @@ public class JDBCRegister implements Register {
 		//TODO
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#addPerson(register.Person)
-	 */
+
 	@Override
 	public void addPerson(Person person) {
 		final String INSERT = "INSERT INTO register.persons(name,number) VALUES (?,?)";
@@ -126,11 +117,7 @@ public class JDBCRegister implements Register {
 	}
 	// }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#findPersonByName(java.lang.String)
-	 */
+
 	@Override
 	public Person findPersonByName(String name) {
 		final String INSERT = "SELECT name, number FROM register.persons WHERE name =?";
@@ -151,11 +138,7 @@ public class JDBCRegister implements Register {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#findPersonByPhoneNumber(java.lang.String)
-	 */
+
 	@Override
 	public Person findPersonByPhoneNumber(String phoneNumber) {
 		final String INSERT = "SELECT name, number FROM register.persons WHERE number =?";
@@ -175,12 +158,10 @@ public class JDBCRegister implements Register {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see register.Register#removePerson(register.Person)
-	 */
-	@Override
+	
+
+
+@Override
 	public void removePerson(int index) {
 		final String INSERT = "DELETE FROM register.persons WHERE id =?";
 
@@ -208,6 +189,9 @@ public class JDBCRegister implements Register {
 		}
 	}
 
+	
+	
+
 	/**
 	 * Returns index of a specified person from register
 	 * 
@@ -216,12 +200,6 @@ public class JDBCRegister implements Register {
 	 * @return index of a person, returns -1 if not found
 	 */
 	private int findIndexOfPerson(Person person) {
-
-		for (int index = 0; index < persons.size(); index++) {
-			if (persons.get(index).equals(person)) {
-				return index;
-			}
-		}
 		return -1;
 	}
 
@@ -234,13 +212,8 @@ public class JDBCRegister implements Register {
 	}
 
 	public List<Person> findAllPersonByNameContains(String nameContains) {
-		List<Person> returnArray = new ArrayList<>();
-		for (Person person : persons) {
-			if (person.getName().contains(nameContains)) {
-				returnArray.add(person);
-			}
-		}
-		return returnArray;
+
+		return null;
 	}
 
 	@Override

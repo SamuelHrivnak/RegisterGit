@@ -35,6 +35,7 @@ public class ConsoleUI {
 	}
 
 	public void run() {
+		register.loadData();
 		while (true) {
 			switch (showMenu()) {
 			case PRINT:
@@ -53,6 +54,7 @@ public class ConsoleUI {
 				findInRegister();
 				break;
 			case EXIT:
+				register.saveData();
 				return;
 			}
 		}
@@ -86,8 +88,8 @@ public class ConsoleUI {
 	}
 
 	public void printRegister() {
-		for (int i = 1; i <= register.getSize(); i++) {
-			System.out.println("[ "+register.getPersonByRow(i).toString()+ " ]");
+		for (int i = 0; i < register.getSize(); i++) {
+			System.out.println("[ "+register.getPerson(i).toString()+ " ]");
 		}
 		
 	}
